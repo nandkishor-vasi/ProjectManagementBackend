@@ -1,7 +1,9 @@
 package com.example.CepDemo1.service;
 
+import com.example.CepDemo1.model.BeneficiaryModel;
 import com.example.CepDemo1.model.DonorModel;
 import com.example.CepDemo1.model.UserModel;
+import com.example.CepDemo1.repo.BeneficiaryRepo;
 import com.example.CepDemo1.repo.DonorRepo;
 import com.example.CepDemo1.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class UserService {
     @Autowired
     private DonorRepo donorRepo;
 
+    @Autowired
+    private BeneficiaryRepo beneficiaryRepo;
+
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public UserModel saveUser(UserModel user) {
@@ -31,6 +36,10 @@ public class UserService {
             DonorModel donor = new DonorModel();
             donor.setUser(user);
             donorRepo.save(donor);
+        } else if (user.getRole()==UserModel.Role.BENEFICIARY){
+            BeneficiaryModel beneficiary = new BeneficiaryModel();
+            beneficiary.setUser(user);
+            beneficiaryRepo.save(beneficiary);
         }
 
         return savedUser;
