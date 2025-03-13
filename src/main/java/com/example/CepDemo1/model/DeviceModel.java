@@ -32,6 +32,46 @@ public class DeviceModel {
     @JsonIgnoreProperties("devices")
     private DonorModel donor;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "beneficiary_id")
+    @JsonIgnoreProperties("devices")
+    private BeneficiaryModel beneficiary;
+
+    private String status = "Pending"; // Default status
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date acceptedDate;
+
+    public void acceptDonation(BeneficiaryModel beneficiary) {
+        this.beneficiary = beneficiary;
+        this.status = "Accepted";
+    }
+
+    public BeneficiaryModel getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(BeneficiaryModel beneficiary) {
+        this.beneficiary = beneficiary;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getAcceptedDate() {
+        return acceptedDate;
+    }
+
+    public void setAcceptedDate(Date acceptedDate) {
+        this.acceptedDate = acceptedDate;
+    }
+
     public Long getId() {
         return id;
     }

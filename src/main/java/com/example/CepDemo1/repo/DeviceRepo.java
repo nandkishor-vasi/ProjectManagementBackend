@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface DeviceRepo extends JpaRepository<DeviceModel, Long> {
     List<DeviceModel> findByDonorId(Long donorId);
+    List<DeviceModel> findByBeneficiaryId(Long beneficiaryId);
+
+    List<DeviceModel> findByStatus(String pending);
 }

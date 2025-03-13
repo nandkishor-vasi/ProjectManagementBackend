@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "beneficiary")
@@ -19,6 +21,9 @@ public class BeneficiaryModel {
     @MapsId
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserModel user;
+
+    @OneToMany(mappedBy = "beneficiary")
+    private List<DeviceModel> devices;
 
     public UserModel getUser() {
         return user;
@@ -35,4 +40,5 @@ public class BeneficiaryModel {
     public void setId(Long id) {
         this.id = id;
     }
+
 }
