@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/donors")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DonorController {
     @Autowired
     private DonorService donorService;

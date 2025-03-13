@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/beneficiary")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BeneficiaryController {
     @Autowired
     private JwtService jwtService;

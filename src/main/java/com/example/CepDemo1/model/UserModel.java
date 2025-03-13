@@ -48,6 +48,8 @@ public class UserModel {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private DonorModel donor;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private BeneficiaryModel beneficiary;
 
     public void setEmail(String email) {
         this.email = email.toLowerCase();
@@ -116,6 +118,13 @@ public class UserModel {
         this.donor = donor;
         if (donor != null) {
             donor.setUser(this);
+        }
+    }
+
+    public void setBeneficiary(BeneficiaryModel beneficiary){
+        this.beneficiary=beneficiary;
+        if(beneficiary!=null){
+            beneficiary.setUser(this);
         }
     }
 

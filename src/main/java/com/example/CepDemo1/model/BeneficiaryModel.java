@@ -17,7 +17,7 @@ public class BeneficiaryModel {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserModel user;
 
     public UserModel getUser() {

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -12,13 +14,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "donors")
 public class DonorModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserModel user;
+
+    @OneToMany(mappedBy = "donor",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DeviceModel> devices;
 
     // Additional donor-specific fields
 
@@ -36,5 +40,12 @@ public class DonorModel {
 
     public void setUser(UserModel user) {
         this.user = user;
+    }
+    public List<DeviceModel> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(List<DeviceModel> devices) {
+        this.devices = devices;
     }
 }

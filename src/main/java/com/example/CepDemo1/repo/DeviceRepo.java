@@ -1,11 +1,12 @@
 package com.example.CepDemo1.repo;
 
-import com.example.CepDemo1.model.DevicePost;
+import com.example.CepDemo1.model.DeviceModel;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.support.JpaRepositoryConfigurationAware;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface DeviceRepo extends JpaRepository<DevicePost, Integer> {
+import java.util.List;
 
+@Repository
+public interface DeviceRepo extends JpaRepository<DeviceModel, Long> {
+    List<DeviceModel> findByDonorId(Long donorId);
 }
