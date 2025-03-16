@@ -8,6 +8,8 @@ import com.example.CepDemo1.repo.DeviceRepo;
 import com.example.CepDemo1.repo.DonorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import java.util.Date;
 import java.util.List;
@@ -47,7 +49,16 @@ public class DeviceService {
             DeviceModel device = deviceGot.get();
             device.setBeneficiary(beneficiary.get());
             device.setStatus("Accepted");
-            device.setAcceptedDate(new Date());
+
+            Date now = new Date();
+            SimpleDateFormat istFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            istFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+
+            String formattedDate = istFormat.format(now);
+            System.out.println("Accepted Device ID: " + device.getId() + " | Accepted Date: " + formattedDate);
+
+            device.setAcceptedDate(now);
+
             return deviceRepo.save(device);
         } else {
             throw new RuntimeException("Device or Beneficiary Not Found");

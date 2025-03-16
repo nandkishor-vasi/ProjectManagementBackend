@@ -24,7 +24,7 @@ public class DeviceModel {
     private String condition;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata"  )
     private Date donationDate;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -40,7 +40,7 @@ public class DeviceModel {
     private String status = "Pending"; // Default status
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",  timezone = "Asia/Kolkata")
     private Date acceptedDate;
 
     public void acceptDonation(BeneficiaryModel beneficiary) {
