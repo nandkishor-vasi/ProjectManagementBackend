@@ -22,4 +22,11 @@ public class BeneficiaryService {
                 .orElseThrow(() -> new RuntimeException("Beneficiary not found with ID: " + beneficiaryId));
     }
 
+    public BeneficiaryModel updateImageUrl(BeneficiaryModel beneficiary) {
+        return beneficiaryRepo.save(beneficiary);
+    }
+
+    public BeneficiaryModel updateProfile(BeneficiaryModel beneficiary) {
+        return beneficiaryRepo.save(beneficiary);
+    }
 }

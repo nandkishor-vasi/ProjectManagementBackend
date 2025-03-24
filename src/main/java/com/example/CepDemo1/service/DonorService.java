@@ -14,4 +14,12 @@ public class DonorService {
         return donorRepo.findById(donorId)
                 .orElseThrow(() -> new RuntimeException("Donor not found with ID: " + donorId));
     }
+
+    public DonorModel updateImageUrl(DonorModel donor) {
+        return donorRepo.save(donor);
+    }
+
+    public DonorModel updateDonor(DonorModel donor) {
+        return donorRepo.save(donor);
+    }
 }

@@ -27,9 +27,7 @@ public class DeviceController {
     @GetMapping("/donors/{donorId}")
     public ResponseEntity<List<DeviceModel>> getDeviceByDonorId(@PathVariable Long donorId) {
         List<DeviceModel> devices = deviceService.getDevicesByDonorId(donorId);
-        if (devices.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+
         return ResponseEntity.ok(devices);
     }
 
