@@ -2,18 +2,16 @@ package com.example.CepDemo1.service;
 
 import com.example.CepDemo1.model.BeneficiaryModel;
 import com.example.CepDemo1.model.DeviceModel;
+import com.example.CepDemo1.model.DonationModel;
 import com.example.CepDemo1.model.DonorModel;
 import com.example.CepDemo1.repo.BeneficiaryRepo;
 import com.example.CepDemo1.repo.DeviceRepo;
+import com.example.CepDemo1.repo.DonationRepo;
 import com.example.CepDemo1.repo.DonorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DeviceService {
@@ -26,6 +24,9 @@ public class DeviceService {
     @Autowired
     private BeneficiaryRepo beneficiaryRepo;
 
+    @Autowired
+    private DonationRepo donationRepo;
+
     public List<DeviceModel> getDevicesByDonorId(Long donorId){
         return deviceRepo.findByDonorId(donorId);
     }
@@ -34,7 +35,17 @@ public class DeviceService {
         DonorModel donor = donorRepo.findById(DonorId)
                 .orElseThrow(() -> new RuntimeException("Donor not found!"));
         deviceModel.setDonor(donor);
-        return deviceRepo.save(deviceModel);
+//        deviceModel.setDeviceImageUrl(imageUrl.get("deviceImageUrl"));
+        DeviceModel savedDevice = deviceRepo.save(deviceModel);
+
+        DonationModel donation = new DonationModel();
+        donation.setDonor(donor);
+        donation.setDevice(savedDevice);
+        donation.setDonationAcceptedDate(new Date());
+
+        donationRepo.save(donation);
+
+        return savedDevice;
     }
 
     public List<DeviceModel> getDevicesByBeneficiaryId(Long beneficiaryId) {

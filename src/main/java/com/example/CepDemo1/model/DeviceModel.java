@@ -1,6 +1,7 @@
 package com.example.CepDemo1.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,15 +30,36 @@ public class DeviceModel {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "donor_id", nullable = false)
-    @JsonIgnoreProperties("devices")
+    @JsonIgnore
     private DonorModel donor;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "beneficiary_id")
-    @JsonIgnoreProperties("devices")
+    @JsonIgnoreProperties({"devices", "otherFields"})
     private BeneficiaryModel beneficiary;
 
-    private String status = "Pending"; // Default status
+    @OneToOne(mappedBy = "device", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private DonationModel donation;
+
+    private String status = "Pending";
+
+    public String getDeviceImageUrl() {
+        return deviceImageUrl;
+    }
+
+    public void setDeviceImageUrl(String deviceImageUrl) {
+        this.deviceImageUrl = deviceImageUrl;
+    }
+
+    public DonationModel getDonation() {
+        return donation;
+    }
+
+    public void setDonation(DonationModel donation) {
+        this.donation = donation;
+    }
+
+    private String deviceImageUrl;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",  timezone = "Asia/Kolkata")

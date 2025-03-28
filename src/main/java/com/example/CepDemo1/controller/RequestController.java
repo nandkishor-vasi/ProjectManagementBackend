@@ -45,6 +45,11 @@ public class RequestController {
         return ResponseEntity.ok(acceptedRequest);
     }
 
+    @GetMapping("/donor/{donorId}")
+    public ResponseEntity<List<RequestModel>> acceptedRequetsByUser(@PathVariable Long donorId){
+        List<RequestModel> acceptedRequest = requestService.getRequestByDonorId(donorId);
+        return ResponseEntity.ok(acceptedRequest);
+    }
 
 }
 

@@ -1,5 +1,7 @@
 package com.example.CepDemo1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +23,16 @@ public class DonorModel {
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"donor"})
     private UserModel user;
 
     @OneToMany(mappedBy = "donor",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<DeviceModel> devices;
+
+    @OneToMany(mappedBy = "donor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<DonationModel> donations;
 
     // Additional donor-specific fields
     private String city;

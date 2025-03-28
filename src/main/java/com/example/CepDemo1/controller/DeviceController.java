@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/devices")
@@ -21,13 +22,13 @@ public class DeviceController {
     @PostMapping("/donors/{donorId}")
     public ResponseEntity<DeviceModel> donateDevice(@PathVariable Long donorId, @Valid @RequestBody DeviceModel deviceModel) {
         DeviceModel savedDevice = deviceService.donateDevice(donorId, deviceModel);
+
         return ResponseEntity.ok(savedDevice);
     }
 
     @GetMapping("/donors/{donorId}")
     public ResponseEntity<List<DeviceModel>> getDeviceByDonorId(@PathVariable Long donorId) {
         List<DeviceModel> devices = deviceService.getDevicesByDonorId(donorId);
-
         return ResponseEntity.ok(devices);
     }
 

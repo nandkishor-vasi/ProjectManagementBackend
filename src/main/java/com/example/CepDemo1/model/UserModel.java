@@ -1,10 +1,12 @@
 package com.example.CepDemo1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 @NoArgsConstructor
@@ -46,9 +48,11 @@ public class UserModel {
     private Role role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"user", "devices", "donations"})
     private DonorModel donor;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"user", "devices", "donations"})
     private BeneficiaryModel beneficiary;
 
     public void setEmail(String email) {

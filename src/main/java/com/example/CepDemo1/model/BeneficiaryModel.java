@@ -1,5 +1,7 @@
 package com.example.CepDemo1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,9 +36,11 @@ public class BeneficiaryModel {
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"beneficiary"})
     private UserModel user;
 
     @OneToMany(mappedBy = "beneficiary", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<DeviceModel> devices;
 
     private String city;
