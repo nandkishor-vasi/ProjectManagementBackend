@@ -36,6 +36,7 @@ public class DeviceService {
                 .orElseThrow(() -> new RuntimeException("Donor not found!"));
         deviceModel.setDonor(donor);
 //        deviceModel.setDeviceImageUrl(imageUrl.get("deviceImageUrl"));
+        deviceModel.setDonorName(donor.getUser().getName());
         DeviceModel savedDevice = deviceRepo.save(deviceModel);
 
         DonationModel donation = new DonationModel();

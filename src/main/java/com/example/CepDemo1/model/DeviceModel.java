@@ -28,6 +28,14 @@ public class DeviceModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata"  )
     private Date donationDate;
 
+    public String getDonorName() {
+        return donorName;
+    }
+
+    public void setDonorName(String donorName) {
+        this.donorName = donorName;
+    }
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "donor_id", nullable = false)
     @JsonIgnore
@@ -42,6 +50,9 @@ public class DeviceModel {
     private DonationModel donation;
 
     private String status = "Pending";
+
+    @JoinColumn(nullable = false)
+    private String donorName;
 
     public String getDeviceImageUrl() {
         return deviceImageUrl;
