@@ -1,7 +1,10 @@
 package com.example.CepDemo1.repo;
 
 import com.example.CepDemo1.model.AdminModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -14,6 +17,9 @@ import java.util.Objects;
 
 @Repository
 public class AdminRepo {
+
+    @Autowired
+    private UserRepo userRepo;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -51,4 +57,36 @@ public class AdminRepo {
 
         return admin;
     }
+
+    public AdminModel findById(Long adminId) {
+        AdminModel admin = null;
+        String sql = "SELECT * FROM admin WHERE user_id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{adminId}, adminRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    private RowMapper<AdminModel> adminRowMapper() {
+        return (rs, rowNum) -> {
+            AdminModel admin = new AdminModel();
+            admin.setId(rs.getLong("id"));
+            admin.setCity(rs.getString("city"));
+            admin.setState(rs.getString("state"));
+            admin.setCountry(rs.getString("country"));
+            admin.setProfileImageUrl(rs.getString("profile_image_url"));
+            admin.setDesignation(rs.getString("designation"));
+            admin.setCreatedAt(rs.getTimestamp("created_at"));
+            admin.setUpdatedAt(rs.getTimestamp("updated_at"));
+            admin.setStatus(AdminModel.Status.valueOf(rs.getString("status")));
+
+            Long userId = rs.getLong("user_id");
+            userRepo.findById(userId).ifPresent(admin::setUser);
+
+            return admin;
+        };
+    }
+
 }

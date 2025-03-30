@@ -1,7 +1,10 @@
 package com.example.CepDemo1.repo;
 
+import com.example.CepDemo1.model.AdminModel;
 import com.example.CepDemo1.model.MemberModel;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -46,4 +49,23 @@ public class MemberRepo {
 
         return member;
     }
+
+//    public MemberModel findById(Long memberId) {
+//        MemberModel member = null;
+//        String sql = "SELECT * FROM members WHERE user_id = ?";
+//
+//        try {
+//            return jdbcTemplate.queryForObject(sql, new Object[]{memberId}, memberRowMapper());
+//        } catch (EmptyResultDataAccessException e) {
+//            return null;
+//        }
+//    }
+
+//    private RowMapper<MemberModel> memberRowMapper(){
+//        return (rs, rowNum) -> {
+//            MemberModel member = new MemberModel();
+//
+//        }
+//    }
+
 }
