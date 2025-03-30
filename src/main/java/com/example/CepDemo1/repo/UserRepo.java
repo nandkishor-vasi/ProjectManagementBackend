@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,7 +38,11 @@ public class UserRepo {
             return ps;
         }, keyHolder);
 
-        Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        System.out.println("Generated Keys: " + keyHolder.getKeys());
+
+        Map<String, Object> keys = keyHolder.getKeys();
+        Long generatedId = ((Number) Objects.requireNonNull(keys).get("id")).longValue();
+
         user.setId(generatedId);
 
         return user;

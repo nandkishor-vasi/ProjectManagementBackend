@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -33,14 +35,18 @@ public class AdminRepo {
             ps.setString(4, admin.getCountry());
             ps.setString(5, admin.getProfileImageUrl());
             ps.setString(6, admin.getDesignation());
-            ps.setTimestamp(7, new java.sql.Timestamp(admin.getCreatedAt().getTime()));
-            ps.setTimestamp(8, new java.sql.Timestamp(admin.getUpdatedAt().getTime()));
+            ps.setTimestamp(7, admin.getCreatedAt() != null ? new Timestamp(admin.getCreatedAt().getTime()) : new Timestamp(System.currentTimeMillis()));
+            ps.setTimestamp(8, admin.getUpdatedAt() != null ? new Timestamp(admin.getUpdatedAt().getTime()) : new Timestamp(System.currentTimeMillis()));
             ps.setString(9, admin.getStatus().toString());
             return ps;
 
         }, keyHolder);
 
-        Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        System.out.println("Generated Keys: " + keyHolder.getKeys());
+
+        Map<String, Object> keys = keyHolder.getKeys();
+        Long generatedId = ((Number) Objects.requireNonNull(keys).get("id")).longValue();
+
         admin.setId(generatedId);
 
         return admin;
