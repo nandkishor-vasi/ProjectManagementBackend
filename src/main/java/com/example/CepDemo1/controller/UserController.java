@@ -55,11 +55,6 @@ public class UserController {
             throw new RuntimeException("Authentication Failed");
         }
     }
-    @GetMapping("/users")
-    public List<UserModel> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
     
 
 }

@@ -1,18 +1,17 @@
 package com.example.CepDemo1.service;
 
-import com.example.CepDemo1.model.BeneficiaryModel;
-import com.example.CepDemo1.model.DonorModel;
+import com.example.CepDemo1.model.AdminModel;
+import com.example.CepDemo1.model.MemberModel;
+import com.example.CepDemo1.model.Role;
 import com.example.CepDemo1.model.UserModel;
-import com.example.CepDemo1.repo.BeneficiaryRepo;
-import com.example.CepDemo1.repo.DonorRepo;
+import com.example.CepDemo1.repo.AdminRepo;
+import com.example.CepDemo1.repo.MemberRepo;
 import com.example.CepDemo1.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -21,10 +20,10 @@ public class UserService {
     private UserRepo repo;
 
     @Autowired
-    private DonorRepo donorRepo;
+    private AdminRepo adminRepo;
 
     @Autowired
-    private BeneficiaryRepo beneficiaryRepo;
+    private MemberRepo memberRepo;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -32,21 +31,17 @@ public class UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         UserModel savedUser =  repo.save(user);
 
-        if(user.getRole() == UserModel.Role.DONOR){
-            DonorModel donor = new DonorModel();
-            donor.setUser(user);
-            donorRepo.save(donor);
-        } else if (user.getRole()==UserModel.Role.BENEFICIARY){
-            BeneficiaryModel beneficiary = new BeneficiaryModel();
-            beneficiary.setUser(user);
-            beneficiaryRepo.save(beneficiary);
+        if(user.getRole() == Role.MEMBER){
+            MemberModel member = new MemberModel();
+            member.setUser(user);
+            memberRepo.save(member);
+        } else if (user.getRole()==Role.ADMIN){
+            AdminModel admin = new AdminModel();
+            admin.setUser(user);
+            adminRepo.save(admin);
         }
 
         return savedUser;
-    }
-
-    public List<UserModel> getAllUsers() {
-        return repo.findAll();
     }
 
     public UserModel getUserByUsername(String username) {

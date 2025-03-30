@@ -2,11 +2,9 @@ package com.example.CepDemo1.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 @NoArgsConstructor
@@ -14,11 +12,6 @@ import net.minidev.json.annotate.JsonIgnore;
 @Entity
 @Table(name = "users")
 public class UserModel {
-
-    public enum Role {
-        DONOR,
-        BENEFICIARY
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,12 +41,12 @@ public class UserModel {
     private Role role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"user", "devices", "donations"})
-    private DonorModel donor;
+    @JsonIgnoreProperties({"user", "other"})
+    private AdminModel admin;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"user", "devices", "donations"})
-    private BeneficiaryModel beneficiary;
+    @JsonIgnoreProperties({"user", "other"})
+    private MemberModel member;
 
     public void setEmail(String email) {
         this.email = email.toLowerCase();
@@ -118,19 +111,19 @@ public class UserModel {
         this.role = role;
     }
 
-    public void setDonor(DonorModel donor) {
-        this.donor = donor;
-        if (donor != null) {
-            donor.setUser(this);
-        }
+    public AdminModel getAdmin() {
+        return admin;
     }
 
-    public void setBeneficiary(BeneficiaryModel beneficiary){
-        this.beneficiary=beneficiary;
-        if(beneficiary!=null){
-            beneficiary.setUser(this);
-        }
+    public void setAdmin(AdminModel admin) {
+        this.admin = admin;
     }
 
+    public MemberModel getMember() {
+        return member;
+    }
 
+    public void setMember(MemberModel member) {
+        this.member = member;
+    }
 }
