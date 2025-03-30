@@ -2,6 +2,7 @@ package com.example.CepDemo1.repo;
 
 import com.example.CepDemo1.model.AdminModel;
 import com.example.CepDemo1.model.MemberModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,6 +18,9 @@ import java.util.Objects;
 
 @Repository
 public class MemberRepo {
+
+    @Autowired
+    private UserRepo userRepo;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -50,22 +54,31 @@ public class MemberRepo {
         return member;
     }
 
-//    public MemberModel findById(Long memberId) {
-//        MemberModel member = null;
-//        String sql = "SELECT * FROM members WHERE user_id = ?";
-//
-//        try {
-//            return jdbcTemplate.queryForObject(sql, new Object[]{memberId}, memberRowMapper());
-//        } catch (EmptyResultDataAccessException e) {
-//            return null;
-//        }
-//    }
+    public MemberModel findById(Long memberId) {
+        MemberModel member = null;
+        String sql = "SELECT * FROM members WHERE user_id = ?";
 
-//    private RowMapper<MemberModel> memberRowMapper(){
-//        return (rs, rowNum) -> {
-//            MemberModel member = new MemberModel();
-//
-//        }
-//    }
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{memberId}, memberRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    private RowMapper<MemberModel> memberRowMapper(){
+        return (rs, rowNum) -> {
+            MemberModel member = new MemberModel();
+            member.setId(rs.getLong("id"));
+            member.setProfilePicture(rs.getString("profile_picture"));
+            member.setAddress(rs.getString("address"));
+            member.setActive(rs.getBoolean("is_active"));
+            member.setCreatedAt(rs.getTimestamp("created_at"));
+
+            Long userId = rs.getLong("user_id");
+            userRepo.findById(userId).ifPresent(member::setUser);
+
+            return member;
+        };
+    }
 
 }
